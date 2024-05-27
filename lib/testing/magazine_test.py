@@ -210,7 +210,8 @@ class TestMagazine:
     #     assert Magazine.top_publisher() == None
 
     #     author_1 = Author("Carry Bradshaw")
-    #     magazine_1 = Magazine("Vogue", "Fashion")
+    #     magazine_1 =
+    # Magazine("Vogue", "Fashion")
     #     magazine_2 = Magazine("AD", "Architecture")
     #     assert Magazine.top_publisher() == None
 
