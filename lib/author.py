@@ -1,28 +1,27 @@
-
 class Author:
-    def _init_(self, name):
-        # Validation for name
-        if not isinstance(name, str):
-            raise TypeError("Name must be a string")
-        if len(name) == 0:
-            raise ValueError("Name must be longer than 0 characters")
-
+    def __init__(self, name):
         self._name = name
+        self._articles = []
 
-    @property
-    def name(self):
+    def get_name(self):
         return self._name
+    
+    def set_name(self, name):
+        self._name = name
+    
+    name = property(get_name, set_name)
 
     def articles(self):
-        return [article for article in Article.all if article.author == self]
+        return self._articles
 
     def magazines(self):
-        return list(set(article.magazine for article in self.articles()))
+        return list({article.magazine for article in self._articles})
 
     def add_article(self, magazine, title):
-        return Article(self, magazine, title)
+        new_article = Article(self, magazine, title)  # Assuming Article class is defined elsewhere
+        self._articles.append(new_article)
+        return new_article
 
     def topic_areas(self):
-        if not self.articles():
-            return None
-        return list(set(magazine.category for magazine in self.magazines()))
+        topics = list(set(article.magazine.category for article in self._articles if article.magazine.category))
+        return topics if topics else None

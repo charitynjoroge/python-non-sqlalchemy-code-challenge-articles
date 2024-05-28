@@ -1,109 +1,41 @@
 class Magazine:
-    def _init_(self, name, category):
-        self._name = name
-        self._category = category
+    def __init__(self, name, category):
+        self.name = name
+        self.category = category
+        self._articles = []
 
-        # Validation for name and category
-        if not isinstance(self._name, str):
-            raise TypeError("Name must be a string")
-        if not 2 <= len(self._name) <= 16:
-            raise ValueError("Name must be between 2 and 16 characters, inclusive")
-        if not isinstance(self._category, str):
-            raise TypeError("Category must be a string")
-        if len(self._category) == 0:
-            raise ValueError("Category must be longer than 0 characters")
-
-    @property
-    def name(self):
+    def get_name(self):
         return self._name
+    
+    def set_name(self, value):
+        if isinstance(value, str) and 2 <= len(value) <= 16:
+            self._name = value
+    
+    name = property(get_name, set_name)
 
-    @name.setter
-    def name(self, value):
-        if not isinstance(value, str):
-            raise TypeError("Name must be a string")
-        if not 2 <= len(value) <= 16:
-            raise ValueError("Name must be between 2 and 16 characters, inclusive")
-        self._name = value
-
-    @property
-    def category(self):
+    def get_category(self):
         return self._category
+    
+    def set_category(self, value):
+        if isinstance(value, str) and len(value) > 0:
+            self._category = value
+        
+    category = property(get_category, set_category)
 
-    @category.setter
-    def category(self, value):
-        if not isinstance(value, str):
-            raise TypeError("Category must be a string")
-        if len(value) == 0:
-            raise ValueError("Category must be longer than 0 characters")
-        self._category = value
+    def add_article(self, article):
+        self._articles.append(article)
 
     def articles(self):
-        return [article for article in Article.all if article.magazine == self]
-
+        return self._articles
+    
     def contributors(self):
-        return list(set(article.author for article in self.articles()))
+        return list(set([article.author for article in self._articles]))
 
     def article_titles(self):
-        if not self.articles():
-            return None
-        return [article.title for article in self.articles()]
+        titles = [article.title for article in self._articles]
+        return titles if titles else None
 
     def contributing_authors(self):
-        authors = {}
-        for article in self.articles():
-            if article.author not in authors:
-                authors[article.author] = 0
-            authors[article.author] += 1
-        return [author for author, count in authors.items() if count > 2]
-
-
-
-if _name_ == "_main_":
-  
-    author1 = Author("John Doe")
-    author2 = Author("Jane Smith")
-
-  
-    magazine1 = Magazine("Tech Today", "Technology")
-    magazine2 = Magazine("Health Weekly", "Health")
-
-
-    article1 = author1.add_article(magazine1, "AI in 2024")
-    article2 = author1.add_article(magazine2, "Healthy Living Tips")
-    article3 = author2.add_article(magazine1, "The Future of Quantum Computing")
-    article4 = author2.add_article(magazine2, "Mental Health Awareness")
-    article5 = author2.add_article(magazine1, "Blockchain and Cryptocurrency")
-
-    print(f"Articles written by {author1.name}:")
-    for article in author1.articles():
-        print(f"- {article.title} in {article.magazine.name}")
-
-
-    print(f"Magazines {author1.name} has contributed to:")
-    for magazine in author1.magazines():
-        print(f"- {magazine.name}")
-
-  
-    print(f"Topic areas {author1.name} has written about:")
-    for topic in author1.topic_areas():
-        print(f"- {topic}")
-
-
-    print(f"Articles published in {magazine1.name}:")
-    for article in magazine1.articles():
-        print(f"- {article.title} by {article.author.name}")
-
-
-    print(f"Contributors to {magazine1.name}:")
-    for author in magazine1.contributors():
-        print(f"- {author.name}")
-
-
-    print(f"Article titles in {magazine1.name}:")
-    for title in magazine1.article_titles():
-        print(f"- {title}")
-
- 
-    print(f"Authors with more than 2 articles in {magazine1.name}:")
-    for author in magazine1.contributing_authors():
-        print(f"- {author.name}")
+        authors = [article.author for article in self._articles]
+        contributing_authors = [author for author in set(authors) if authors.count(author) > 2]
+        return contributing_authors if contributing_authors else None
