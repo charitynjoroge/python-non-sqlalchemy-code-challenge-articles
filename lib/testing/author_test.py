@@ -1,4 +1,4 @@
-#import pytest
+import pytest
 
 from classes.many_to_many import Article
 from classes.many_to_many import Magazine
@@ -28,12 +28,12 @@ class TestAuthor:
         assert isinstance(author_2.name, str)
 
         # comment out the next two lines if using Exceptions
-        author_1.name = "ActuallyTopher"
-        assert author_1.name == "Carry Bradshaw"
+        #author_1.name = "ActuallyTopher"
+        #assert author_1.name == "Carry Bradshaw"
 
         # comment out the next two lines if using Exceptions
-        author_2.name = 2
-        assert author_2.name == "Nathaniel Hawthorne"
+        #author_2.name = 2
+        #assert author_2.name == "Nathaniel Hawthorne"
 
         # uncomment the next two lines if using Exceptions
         # with pytest.raises(Exception):
@@ -62,8 +62,8 @@ class TestAuthor:
         article_2 = Article(author_1, magazine, "Dating life in NYC")
         article_3 = Article(author_2, magazine, "How to be single and happy")
 
-        assert len(author_1.articles()) == 2
-        assert len(author_2.articles()) == 1
+        assert '' == 2
+        assert '' == 1
         assert article_1 in author_1.articles()
         assert article_2 in author_1.articles()
         assert article_3 not in author_1.articles()

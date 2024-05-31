@@ -1,9 +1,9 @@
 
 class Magazine:
-    def _init_(self, name, category):
+    def __init__(self, name, category):
         self.name = name
         self.category = category
-    
+        self.articles_published = []
 
     @property
     def name(self):
@@ -14,11 +14,11 @@ class Magazine:
         if isinstance(new_name, str):
             if 2 <= len(new_name) <= 16:
                 self._name = new_name
-            else: 
-                ValueError("Name must be between 2 and 16 characters")
+            else:
+                raise ValueError("Name must be between 2 and 16 characters")
         else:
-            TypeError("Name must be a string")   
-        
+            raise TypeError("Name must be a string")
+
     @property
     def category(self):
         return self._category
@@ -26,40 +26,28 @@ class Magazine:
     @category.setter
     def category(self, new_category):
         if isinstance(new_category, str):
-            if len(new_category):
+            if len(new_category) > 0:
                 self._category = new_category
             else:
-                ValueError("Category must be longer than 0 characters")
+                raise ValueError("Category must be longer than 0 characters")
         else:
-            TypeError("Category must be a string")   
+            raise TypeError("Category must be a string")
 
     def articles(self):
-        return [article for article in Article.all if self == article.magazine]
+        return self.articles_published
 
     def contributors(self):
-        return list({article.author for article in self.articles()})
+        return [article.author for article in self.articles_published]
 
     def article_titles(self):
-        article_titles = [magazine.title for magazine in self.articles()]
-        if article_titles:
-            return article_titles
-        else:
-            return None
+        return [article.title for article in self.articles_published]
 
     def contributing_authors(self):
         authors = {}
-        list_of_authors = []
-        for article in self.articles():
+        for article in self.articles_published:
             if article.author in authors:
                 authors[article.author] += 1
             else:
                 authors[article.author] = 1  
         
-        for author in authors:
-            if authors[author] >= 2:
-                list_of_authors.append(author) 
-                  
-        if (list_of_authors):
-            return list_of_authors
-        else:
-            return None
+        return [author for author, count in authors.items() if count >= 2]

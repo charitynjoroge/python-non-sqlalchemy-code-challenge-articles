@@ -13,27 +13,24 @@ class Article:
     
     @title.setter
     def title(self, new_title):
-        if hasattr(self, "title"):
-            AttributeError("Title cannot be changed")
-        else:
-            if isinstance(new_title, str):
-                if 5 <= len(new_title) <= 50:
-                    self._title = new_title
-                else:
-                    ValueError("Title must be between 5 and 50 characters")
-            else:
-                TypeError("Title must be a string")
-            
+        if hasattr(self, "_title"):
+            raise AttributeError("Title cannot be changed")
+        if not isinstance(new_title, str):
+            raise TypeError("Title must be a string")
+        if not 5 <= len(new_title) <= 50:
+            raise ValueError("Title must be between 5 and 50 characters")
+        self._title = new_title
+
     @property
     def author(self):
         return self._author
     
     @author.setter
     def author(self, new_author):
-        if isinstance(new_author, Author):
+        if isinstance(new_author):
             self._author = new_author
         else:
-            TypeError("Author must be an instance of Author")
+            raise TypeError("Author must be an instance of Author")
         
     @property
     def magazine(self):
@@ -41,9 +38,8 @@ class Article:
     
     @magazine.setter
     def magazine(self, new_magazine):
-        if isinstance(new_magazine, Magazine):
+        if isinstance(new_magazine):
             self._magazine = new_magazine
         else:
-            TypeError("Magazine must be an instance of Magazine")
-
+            raise TypeError("Magazine must be an instance of Magazine")
 
